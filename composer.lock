@@ -1,0 +1,119 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "92873b8e9bac32b81fac3d2fe6e39282",
+    "packages": [
+        {
+            "name": "obray/http",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/nateobray/http.git",
+                "reference": "a1c368323995b281825524777e1a5ad297a4a434"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/nateobray/http/zipball/a1c368323995b281825524777e1a5ad297a4a434",
+                "reference": "a1c368323995b281825524777e1a5ad297a4a434",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.1"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^8.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "obray\\http\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "HTTP library",
+            "homepage": "http://www.obray.net",
+            "time": "2021-02-28T00:00:48+00:00"
+        },
+        {
+            "name": "obray/socket-server",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/nateobray/SocketServer.git",
+                "reference": "ceb8dd47d51532dbed49bdee111a932bab889bf5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/nateobray/SocketServer/zipball/ceb8dd47d51532dbed49bdee111a932bab889bf5",
+                "reference": "ceb8dd47d51532dbed49bdee111a932bab889bf5",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "obray\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Generic socket server with non-blocking reads and writes.",
+            "time": "2020-12-23T23:26:39+00:00"
+        },
+        {
+            "name": "obray/web-socket-server",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/nateobray/webSocketServer.git",
+                "reference": "47ead6fcac05370e40fd137b79161a19c4368672"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/nateobray/webSocketServer/zipball/47ead6fcac05370e40fd137b79161a19c4368672",
+                "reference": "47ead6fcac05370e40fd137b79161a19c4368672",
+                "shasum": ""
+            },
+            "require": {
+                "obray/socket-server": "dev-master",
+                "php": ">=7.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "obray\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "PHP based WebSocket server.",
+            "homepage": "http://www.obray.net",
+            "time": "2020-09-08T00:31:06+00:00"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "dev",
+    "stability-flags": {
+        "obray/http": 20,
+        "obray/socket-server": 20,
+        "obray/web-socket-server": 20
+    },
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": [],
+    "plugin-api-version": "1.1.0"
+}
