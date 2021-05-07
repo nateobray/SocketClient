@@ -100,13 +100,11 @@ class SocketClient
             if(empty($this->socketConnection) || $this->socketConnection->isConnected() === false){
                 $this->handler->onStartClient($this);
                 $address = $this->protocol."://".$this->host.":".$this->port;
-                print_r("Connecting: " . $address . "\n");
                 $this->socket = stream_socket_client ( $address , $this->errorNo , $this->errorMessage, 30, STREAM_CLIENT_CONNECT, $this->context->get());
                 if( !is_resource($this->socket) ){
                     throw new \Exception("Unable to connect to ".$this->host.":".$this->port." over ".$this->protocol.": " . $this->errorMessage . "\n");
                 }
-                print_r("Connected to ".$this->host.":".$this->port." over ".$this->protocol."\n");
-
+                
                 $this->socketConnection = new \obray\SocketConnection($this->socket, $this->eventLoop, $this->handler, $this->context->isEncrypted(), false);
                 if(!empty($this->readMethod)) $this->socketConnection->setReadMethod($this->readMethod);
                 if(!empty($this->eol)) $this->socketConnection->setEOL($this->eol);

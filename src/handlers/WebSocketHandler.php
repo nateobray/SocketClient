@@ -28,9 +28,9 @@ class WebSocketHandler extends \obray\base\SocketServerBaseHandler
 
     public function onData(string $data, \obray\interfaces\SocketConnectionInterface $connection): void
     {
-        print_r("On Data\n");
+        
         if(!$this->isUpgraded){
-            print_r("Not Upgraded\n");
+            
             $this->isUpgraded = true;
             $request = \obray\http\Transport::decode($data);
             $this->acceptToken = $request->getHeaders('Sec-WebSocket-Accept');
@@ -40,13 +40,10 @@ class WebSocketHandler extends \obray\base\SocketServerBaseHandler
             $this->websocket = new \obray\WebSocket();
             $data = \obray\WebSocketFrame::encode(json_encode($obj));
             $connection->qWrite($data);
-            print_r("Wrote Data\n");
             return;
         }
 
-        print_r("Handling Regular data\n");
         $data = $this->websocket->decode($data, $connection, [$this, 'onMessage']);
-        print_r($data);
         
     }
 
@@ -54,7 +51,6 @@ class WebSocketHandler extends \obray\base\SocketServerBaseHandler
 	{
 		switch($opcode) {
 			case \obray\WebSocketFrame::TEXT:
-				print_r($msg);
 				break;
 			case \obray\WebSocketFrame::BINARY:
 				
