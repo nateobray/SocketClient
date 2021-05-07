@@ -16,7 +16,7 @@ class SocketClient
     private $socketConnection;
 
     // internal
-    private $eventLoopType;
+    private $eventLoopType = NULL;
     private $socketWatcher;
     private $connections = [];
 
@@ -49,6 +49,21 @@ class SocketClient
         }
     }
 
+    public function setReadMethod(int $readMethod): void
+    {
+        $this->readMethod = $readMethod;
+    }
+
+    public function setEOL(string $eol): void
+    {
+        $this->eol = $eol;
+    }
+
+    public function setInitialReadLength(int $readLength): void
+    {
+        $this->initialReadLength = $readLength;
+    }
+
     /**
      * Start
      * 
@@ -61,12 +76,12 @@ class SocketClient
         $this->handler = $handler;
         
         // determine which event loop to use
-        if( $this->eventLoopType === NULL && !class_exists( '\EV' || $this->eventLoopType === EV ) ) {
+        if( $this->eventLoopType === NULL && class_exists( '\EV' || $this->eventLoopType === self::EV ) ) {
             $this->eventLoop = new \obray\eventLoops\EVLoop();
         } else {
             $this->eventLoop = new \obray\eventLoops\StreamSelectEventLoop($this->socket);
         }
-
+        
         // start watching connections
         $this->watch();
     }
@@ -79,23 +94,23 @@ class SocketClient
 
     private function watch()
     {
-        // create new event loop
-        $this->eventLoop = new \obray\eventLoops\EVLoop();
         
         // add watcher for cleaning up disconnected connections from the main connection list
         $this->disconnectWatcher = $this->eventLoop->watchTimer(0, 3, function($watcher){
             if(empty($this->socketConnection) || $this->socketConnection->isConnected() === false){
-                
                 $this->handler->onStartClient($this);
                 $address = $this->protocol."://".$this->host.":".$this->port;
                 print_r("Connecting: " . $address . "\n");
-                $this->socket = stream_socket_client ( $address , $this->errorNo , $this->errorMessage, 30, STREAM_CLIENT_ASYNC_CONNECT, $this->context->get());
+                $this->socket = stream_socket_client ( $address , $this->errorNo , $this->errorMessage, 30, STREAM_CLIENT_CONNECT, $this->context->get());
                 if( !is_resource($this->socket) ){
                     throw new \Exception("Unable to connect to ".$this->host.":".$this->port." over ".$this->protocol.": " . $this->errorMessage . "\n");
                 }
                 print_r("Connected to ".$this->host.":".$this->port." over ".$this->protocol."\n");
 
                 $this->socketConnection = new \obray\SocketConnection($this->socket, $this->eventLoop, $this->handler, $this->context->isEncrypted(), false);
+                if(!empty($this->readMethod)) $this->socketConnection->setReadMethod($this->readMethod);
+                if(!empty($this->eol)) $this->socketConnection->setEOL($this->eol);
+                if(!empty($this->initialReadLength)) $this->socketConnection->setInitialReadLength($this->initialReadLength);
                 $this->socketConnection->run();
             }
             
@@ -114,6 +129,17 @@ class SocketClient
     public function setEventLoopType(int $eventLoopType)
     {
         $this->eventLoopType = $eventLoopType;
+    }
+
+    public function stop(): void
+    {
+        $this->eventLoop->stop();
+        //$this->socketConnection->disconnect();
+    }
+
+    public function disconnect(): void
+    {
+        
     }
 
 }
